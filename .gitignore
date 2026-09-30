@@ -1,0 +1,70 @@
+# ==========================================
+# Archivos de compilación y salida de Maven
+# ==========================================
+target/
+*.jar
+*.war
+*.ear
+*.rar
+*.class
+
+# ==========================================
+# Configuración de IDEs
+# ==========================================
+
+# Eclipse / Spring Tool Suite (STS)
+.settings/
+.project
+.classpath
+.factorypath
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Visual Studio Code
+.vscode/
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbproject/genfiles.properties
+build.xml
+
+# ==========================================
+# Archivos del sistema operativo
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# Logs y bases de datos locales
+# ==========================================
+*.log
+logs/
+
+# Archivos de datos de H2 (si guardas la BD H2 en archivo local)
+*.mv.db
+*.trace.db
+
+# ==========================================
+# Archivos de configuración sensible / entorno
+# ==========================================
+# Descomenta la siguiente línea si usas variables de entorno en un archivo local
+# .env
+
+# Descomenta la siguiente línea si usas un properties exclusivo para credenciales locales
+# application-local.properties

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navegación Superior -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+        <div class="container">
+			<a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="/">
+			    <i class="bi bi-shop fs-4 text-primary"></i>
+			    <span>MiTienda</span>
+			</a>
+            <div class="d-flex gap-2">
+                <a href="/catalog" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+                    <i class="bi bi-grid-fill"></i> Catálogo
+                </a>
+				<a href="/admin" class="btn btn-warning btn-sm d-flex align-items-center gap-1">
+				    <i class="bi bi-gear-fill"></i> Administración
+				</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-3">
+        <!-- Encabezado de Página -->
+        <div class="text-center mb-4">
+            <h1 class="fw-bold text-dark mb-2">Tu Carrito de Compras</h1>
+            <p class="text-muted">Revisa los productos seleccionados antes de finalizar tu compra.</p>
+        </div>
+
+        <!-- Vista cuando el Carrito está VACÍO -->
+        <div th:if="${#maps.isEmpty(cartItems)}" class="row justify-content-center my-5">
+            <div class="col-12 col-md-6 text-center py-5">
+                <div class="card shadow-sm border-0 p-5 rounded-4">
+                    <i class="bi bi-cart-x text-muted display-1 mb-3"></i>
+                    <h2 class="h4 fw-bold text-dark mb-2">Tu carrito está vacío</h2>
+                    <p class="text-muted mb-4">Aún no has añadido ningún producto del catálogo.</p>
+                    <div>
+                        <a href="/catalog" class="btn btn-primary px-4 py-2 rounded-pill fw-semibold">
+                            <i class="bi bi-bag-fill me-1"></i> Explorar Catálogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vista cuando el Carrito CONTIENE PRODUCTOS -->
+        <div th:unless="${#maps.isEmpty(cartItems)}" class="row g-4">
+            
+            <!-- Lista de Productos en el Carrito -->
+            <div class="col-12 col-lg-8">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-primary text-white py-3 rounded-top-3 d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0 fw-bold d-flex align-items-center gap-2">
+                            <i class="bi bi-cart3"></i> Productos en la Cesta
+                        </h2>
+                        <!-- Muestra la suma total de unidades -->
+                        <span class="badge bg-light text-primary fw-semibold" 
+                              th:text="${#aggregates.sum(cartItems.values())} + ' artículos'">0 artículos</span>
+                    </div>
+
+                    <ul class="list-group list-group-flush">
+                        <!-- Iteración sobre las entradas del Map (entry.key = Product, entry.value = cantidad) -->
+                        <li th:each="entry : ${cartItems}" class="list-group-item p-3 d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="bg-light p-2 rounded-3 text-secondary">
+                                    <i class="bi bi-box-seam fs-3"></i>
+                                </div>
+                                <div>
+                                    <h3 class="h6 mb-1 fw-bold text-dark" th:text="${entry.key.name}">Nombre del Producto</h3>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span class="badge bg-light text-dark border">
+                                            <i class="bi bi-tag-fill me-1 text-muted"></i>
+                                            <span th:text="${#numbers.formatCurrency(entry.key.price)}">0.00 €</span>
+                                        </span>
+                                        <span class="badge bg-secondary">
+                                            Cantidad: <span th:text="${entry.value}">1</span>
+                                        </span>
+                                        <span class="text-muted small">
+                                            (Subtotal: <strong th:text="${#numbers.formatCurrency(entry.key.price * entry.value)}">0.00 €</strong>)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form th:action="@{/cart/remove/{id}(id=${entry.key.id})}" method="post">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
+                                    <i class="bi bi-trash-fill"></i> Quitar
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+
+                    <div class="card-footer bg-white p-3 border-top-0 text-start">
+                        <a href="/catalog" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-arrow-left me-1"></i> Continuar Comprando
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen del Pedido (Sidebar) -->
+            <div class="col-12 col-lg-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-dark text-white py-3 rounded-top-3">
+                        <h2 class="h5 mb-0 fw-bold d-flex align-items-center gap-2">
+                            <i class="bi bi-receipt"></i> Resumen del Pedido
+                        </h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between mb-2 text-muted">
+                            <span>Subtotal</span>
+                            <!-- Cálculo del total acumulado sumando (precio * cantidad) de cada entrada -->
+                            <span th:text="${#numbers.formatCurrency(#aggregates.sum(cartItems.entrySet().![key.price * value]))}">0.00 €</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3 text-muted">
+                            <span>Gastos de envío</span>
+                            <span class="text-success fw-semibold">Gratis</span>
+                        </div>
+                        
+                        <hr class="my-3">
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong class="fs-5 text-dark">Total</strong>
+                            <strong class="fs-5 text-primary" 
+                                    th:text="${#numbers.formatCurrency(#aggregates.sum(cartItems.entrySet().![key.price * value]))}">0.00 €</strong>
+                        </div>
+
+                        <button type="button" class="btn btn-success w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 shadow-sm">
+                            <i class="bi bi-credit-card-fill fs-5"></i> Tramitar Pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

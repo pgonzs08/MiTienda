@@ -10,7 +10,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>es.ugr.dss</groupId>
-	<artifactId>Practica1</artifactId>
+	<artifactId>MiTienda</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

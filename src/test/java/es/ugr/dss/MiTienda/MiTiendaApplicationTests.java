@@ -1,10 +1,10 @@
-package es.ugr.dss.Practica1;
+package es.ugr.dss.MiTienda;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Practica1ApplicationTests {
+class MiTiendaApplicationTests {
 
 	@Test
 	void contextLoads() {

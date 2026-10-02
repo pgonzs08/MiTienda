@@ -37,9 +37,8 @@
 
                     <div class="card-body p-4">
                         <form th:action="@{/catalog/update/{id}(id=${product.id})}" method="post">
-                            <!-- Token CSRF para Spring Security -->
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-
+							<!-- Token CSRF seguro con renderizado condicional (evita la excepción SpEL si _csrf es null) -->
+							<input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <div class="mb-3">
                                 <label for="productName" class="form-label fw-bold">Nuevo nombre</label>
                                 <div class="input-group">

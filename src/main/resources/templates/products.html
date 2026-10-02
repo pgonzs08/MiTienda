@@ -82,8 +82,8 @@
 
                     <div class="card-footer bg-white border-top-0 p-4 pt-0">
                         <form th:action="@{/cart/add/{id}(id=${product.id})}" method="post">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                            <button type="submit" class="btn btn-outline-primary w-100 fw-semibold d-flex align-items-center justify-content-center gap-2 py-2">
+							<input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+							<button type="submit" class="btn btn-outline-primary w-100 fw-semibold d-flex align-items-center justify-content-center gap-2 py-2">
                                 <i class="bi bi-cart-plus-fill fs-5"></i>
                                 <span>Agregar al Carrito</span>
                             </button>

@@ -5,7 +5,9 @@ import es.ugr.dss.MiTienda.service.ProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,11 +17,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ProductController.class)
+@WebMvcTest(controllers = ProductController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ProductControllerTest {
 
     @Autowired
@@ -30,12 +34,11 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("GET /catalog debe cargar la vista 'products' con el listado de productos")
+    @WithMockUser
     void getProductsPage_DeberiaDevolverVistaProductsConModelo() throws Exception {
-        // Arrange
         Product producto = new Product();
         given(productService.getAllProducts()).willReturn(List.of(producto));
 
-        // Act & Assert
         mockMvc.perform(get("/catalog"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("products"))
@@ -46,9 +49,9 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("GET /catalog/add debe mostrar la vista 'product_form' con un nuevo objeto Product")
+    @DisplayName("GET /catalog/add debe mostrar la vista 'product_form'")
+    @WithMockUser
     void showAddForm_DeberiaDevolverVistaFormularioNuevoProducto() throws Exception {
-        // Act & Assert
         mockMvc.perform(get("/catalog/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("product_form"))
@@ -56,14 +59,13 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("GET /catalog/edit/{id} debe mostrar el formulario relleno con los datos del producto existente")
+    @DisplayName("GET /catalog/edit/{id} debe mostrar el formulario con los datos del producto")
+    @WithMockUser
     void editForm_DeberiaDevolverVistaFormularioConProductoExistente() throws Exception {
-        // Arrange
         Long productId = 1L;
         Product productoExistente = new Product();
         given(productService.getProductById(productId)).willReturn(productoExistente);
 
-        // Act & Assert
         mockMvc.perform(get("/catalog/edit/{id}", productId))
                 .andExpect(status().isOk())
                 .andExpect(view().name("product_form"))
@@ -74,9 +76,10 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("POST /catalog/add debe guardar el producto y redirigir a /admin")
+    @WithMockUser
     void addProduct_DeberiaGuardarProductoYRedirigirAAdmin() throws Exception {
-        // Act & Assert
         mockMvc.perform(post("/catalog/add")
+                        .with(csrf()) // Necesario cuando Spring Security está presente
                         .param("name", "Teclado Mecánico")
                         .param("price", "49.99"))
                 .andExpect(status().is3xxRedirection())
@@ -86,15 +89,15 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("POST /catalog/update/{id} debe actualizar el producto si existe y redirigir a /admin")
+    @DisplayName("POST /catalog/update/{id} debe actualizar el producto si existe")
+    @WithMockUser
     void editProduct_DeberiaActualizarYRedirigir_CuandoProductoExiste() throws Exception {
-        // Arrange
         Long productId = 1L;
         Product productoExistente = new Product();
         given(productService.getProductById(productId)).willReturn(productoExistente);
 
-        // Act & Assert
         mockMvc.perform(post("/catalog/update/{id}", productId)
+                        .with(csrf())
                         .param("name", "Ratón Gaming")
                         .param("price", "29.99"))
                 .andExpect(status().is3xxRedirection())
@@ -104,15 +107,15 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("POST /catalog/update/{id} no debe llamar a saveProduct si el producto no existe")
+    @DisplayName("POST /catalog/update/{id} no debe guardar si el producto no existe")
+    @WithMockUser
     void editProduct_NoDeberiaGuardar_CuandoProductoNoExiste() throws Exception {
-        // Arrange
         Long productId = 99L;
         given(productService.getProductById(productId)).willReturn(null);
 
-        // Act & Assert
         mockMvc.perform(post("/catalog/update/{id}", productId)
-                        .param("name", "Producto Inexistente")
+                        .with(csrf())
+                        .param("name", "Inexistente")
                         .param("price", "10.00"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin"));
@@ -122,12 +125,12 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("POST /catalog/delete/{id} debe eliminar el producto y redirigir a /admin")
+    @WithMockUser
     void deleteProduct_DeberiaEliminarYRedirigirAAdmin() throws Exception {
-        // Arrange
         Long productId = 1L;
 
-        // Act & Assert
-        mockMvc.perform(post("/catalog/delete/{id}", productId))
+        mockMvc.perform(post("/catalog/delete/{id}", productId)
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin"));
 

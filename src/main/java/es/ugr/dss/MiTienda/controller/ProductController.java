@@ -7,7 +7,6 @@ import es.ugr.dss.MiTienda.model.Product;
 import es.ugr.dss.MiTienda.service.ProductService;
 
 @Controller
-@RequestMapping("/catalog")
 public class ProductController {
 
 	private final ProductService productService;
@@ -16,24 +15,24 @@ public class ProductController {
 		this.productService = productService;
 	}
 
-	@GetMapping
+	@GetMapping("/catalog")
 	public String getProductsPage(Model model) {
 		model.addAttribute("products", productService.getAllProducts());
 		return "products"; // Devuelve products.html desde las plantillas
 	}
-	@GetMapping("/add")
+	@GetMapping("/admin/catalog/add")
 	public String showAddForm(Model model) {
 		model.addAttribute("product", new Product());
 		return "product_form"; // templates/product_form.html
 	}
 
-	@GetMapping("/edit/{id}")
+	@GetMapping("/admin/catalog/edit/{id}")
 	public String editForm(Model model, @PathVariable Long id) {
 		model.addAttribute("product", productService.getProductById(id));
 		return "product_form";
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/admin/catalog/add")
 	public String addProduct(@RequestParam String name, @RequestParam double price) {
 		Product product = new Product();
 		product.setName(name);
@@ -43,7 +42,7 @@ public class ProductController {
 	}
 
 
-	@PostMapping("/update/{id}")
+	@PostMapping("/admin/catalog/update/{id}")
 	public String editProduct(@PathVariable Long id, @RequestParam String name, @RequestParam double price) {
 		Product product = productService.getProductById(id);
 		if (product != null) {
@@ -53,7 +52,7 @@ public class ProductController {
 		}
 		return "redirect:/admin";  // Redirigir correctamente a /admin
 	}
-	@PostMapping("/delete/{id}")
+	@PostMapping("/admin/catalog/delete/{id}")
 	public String deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 		return "redirect:/admin";  // Redirigir correctamente a /admin

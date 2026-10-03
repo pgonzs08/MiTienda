@@ -54,5 +54,9 @@ public class Product {
 		this.price = price;
 	}
 
+	public void setId(long l) {
+		this.id=l;
+	}
+
 
 }

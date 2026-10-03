@@ -6,12 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -22,8 +18,9 @@ public class SecurityConfig{
 		http
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/", "/cart/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/products").permitAll()
+				.requestMatchers(HttpMethod.GET, "/catalog").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/register").permitAll()
 				.requestMatchers(PathRequest.toH2Console()).permitAll()
 				.anyRequest().authenticated()
 				)
@@ -52,25 +49,5 @@ public class SecurityConfig{
 	PasswordEncoder password() {
 		return new BCryptPasswordEncoder();
 	}
-	/**
-	 * USUARIOS DE PRUEBA, NO DEJAR EN LA APP EN DESPLIEGUE
-	 * @param encoder
-	 * @return
-	 */
-	@Bean
-    UserDetailsService users(PasswordEncoder encoder) {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(encoder.encode("admin123"))
-                .roles("ADMIN")
-                .build();
 
-        UserDetails user = User.builder()
-                .username("user")
-                .password(encoder.encode("user123"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, user);
-    }
 }

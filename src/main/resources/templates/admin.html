@@ -28,6 +28,13 @@
                 <a href="/admin/download-db-sql" class="btn btn-success btn-sm d-flex align-items-center gap-1">
                     <i class="bi bi-download"></i> Descargar BD (SQL)
                 </a>
+				<form th:action="@{/logout}" method="post" class="m-0">
+				    <!-- Token CSRF inyectado automáticamente por Thymeleaf al usar th:action -->
+				    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
+				        <i class="bi bi-box-arrow-right"></i>
+				        <span>Cerrar sesión</span>
+				    </button>
+				</form>
             </div>
         </div>
     </nav>

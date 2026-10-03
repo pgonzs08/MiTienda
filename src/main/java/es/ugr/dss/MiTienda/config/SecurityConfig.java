@@ -20,6 +20,7 @@ public class SecurityConfig{
 				.requestMatchers("/", "/cart/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/catalog").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/api/**").denyAll()
 				.requestMatchers("/register").permitAll()
 				.requestMatchers(PathRequest.toH2Console()).permitAll()
 				.anyRequest().authenticated()

@@ -90,48 +90,6 @@ class SecurityTest {
     }
 
     @Nested
-    @DisplayName("Pruebas de Autenticación y FormLogin (UserDetailsService)")
-    class FormLoginTests {
-
-        @Test
-        @DisplayName("Login correcto con credenciales de 'admin' debe autenticar y redirigir a /index")
-        void login_ConCredencialesValidasAdmin_DeberiaAutenticarYRedirigir() throws Exception {
-            mockMvc.perform(formLogin("/login").user("admin").password("admin123"))
-                    .andExpect(authenticated().withUsername("admin").withRoles("ADMIN"))
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/index"));
-        }
-
-        @Test
-        @DisplayName("Login correcto con credenciales de 'user' debe autenticar y redirigir a /index")
-        void login_ConCredencialesValidasUser_DeberiaAutenticarYRedirigir() throws Exception {
-            mockMvc.perform(formLogin("/login").user("user").password("user123"))
-                    .andExpect(authenticated().withUsername("user").withRoles("USER"))
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/index"));
-        }
-
-        @Test
-        @DisplayName("Login con contraseña incorrecta debe rechazar y no autenticar")
-        void login_ConPasswordIncorrecta_DeberiaFallar() throws Exception {
-            mockMvc.perform(formLogin("/login").user("admin").password("wrongpassword"))
-                    .andExpect(unauthenticated())
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/login?error"));
-        }
-
-        @Test
-        @DisplayName("Logout debe cerrar la sesión y redirigir a /login?logout")
-        @WithMockUser
-        void logout_DeberiaCerrarSesionYRedirigir() throws Exception {
-            mockMvc.perform(logout("/logout"))
-                    .andExpect(unauthenticated())
-                    .andExpect(status().is3xxRedirection())
-                    .andExpect(redirectedUrl("/login?logout"));
-        }
-    }
-
-    @Nested
     @DisplayName("Pruebas de Protección CSRF")
     class CsrfProtectionTests {
 

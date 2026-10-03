@@ -66,10 +66,16 @@
                             </div>
 
                             <!-- Botón de Envío -->
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-3 shadow-sm">
-                                <i class="bi bi-box-arrow-in-right fs-5"></i> Iniciar Sesión
-                            </button>
+							<button type="submit" class="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 rounded-3 shadow-sm">
+							    <i class="bi bi-box-arrow-in-right fs-5"></i> Iniciar Sesión
+							</button>
                         </form>
+						
+						<!-- Enlace a registo -->
+						<div class="pt-2 border-top">
+						    <span class="small text-secondary">¿No tienes una cuenta?</span>
+						    <a th:href="@{/register}" class="small text-decoration-none fw-bold ms-1">Registrarse</a>
+						</div>
 
                     </div>
                 </div>

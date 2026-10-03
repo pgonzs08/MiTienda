@@ -25,13 +25,30 @@
 				<a href="/admin" class="btn btn-warning btn-sm d-flex align-items-center gap-1">
 				    <i class="bi bi-gear-fill"></i> Administración
 				</a>
-				<form th:action="@{/logout}" method="post" class="m-0">
-				    <!-- Token CSRF inyectado automáticamente por Thymeleaf al usar th:action -->
-				    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
-				        <i class="bi bi-box-arrow-right"></i>
-				        <span>Cerrar sesión</span>
-				    </button>
-				</form>
+				<div class="d-flex align-items-center gap-2">
+
+				    <!-- 1. Mostrar cuando el usuario SÍ está autenticado -->
+				    <form th:action="@{/logout}" method="post" class="m-0" sec:authorize="isAuthenticated()">
+				        <!-- Token CSRF inyectado automáticamente por Thymeleaf al usar th:action -->
+				        <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
+				            <i class="bi bi-box-arrow-right"></i>
+				            <span>Cerrar sesión</span>
+				        </button>
+				    </form>
+
+				    <!-- 2. Mostrar cuando el usuario NO está autenticado (Anónimo) -->
+				    <th:block sec:authorize="isAnonymous()">
+				        <a th:href="@{/login}" class="btn btn-outline-primary btn-sm d-flex align-items-center gap-1">
+				            <i class="bi bi-box-arrow-in-right"></i>
+				            <span>Iniciar sesión</span>
+				        </a>
+				        <a th:href="@{/register}" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+				            <i class="bi bi-person-plus-fill"></i>
+				            <span>Registrarse</span>
+				        </a>
+				    </th:block>
+
+				</div>
             </div>
         </div>
     </nav>

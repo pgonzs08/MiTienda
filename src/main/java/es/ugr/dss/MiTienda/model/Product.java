@@ -6,13 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Getter @Setter
 public class Product {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,29 +17,9 @@ public class Product {
     private Long id;
 
 	@JsonProperty("productoNombre") 
-	@Getter @Setter
     private String name;
 	
-	@Getter @Setter
     private double price;
-
-
-    // Getters y Setters
-    public String getName() {
-    	return this.name;
-    }
-    
-    public void setName(String name) {
-    	this.name = name;
-    }
-
-    public double getPrice() {
-    	return price;
-    }
-    
-    public void setPrice(double price) {
-    	this.price = price;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,5 +33,26 @@ public class Product {
     public int hashCode() {
         return Objects.hash(id);
     }
+    
+    public Long getId() {
+    	return this.id;
+    }
+
+    public String getName() {
+		return this.name;
+	}
+    
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public double getPrice() {
+		return this.price;
+	}
+    
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 
 }

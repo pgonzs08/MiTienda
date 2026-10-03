@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +29,7 @@ public class SecurityConfig{
 				)
 		.formLogin(form -> form
 				.loginPage("/login").permitAll()
+				.defaultSuccessUrl("/index", true)
 				)
 		.logout(logout -> logout
 				.logoutUrl("/logout")
@@ -43,13 +43,6 @@ public class SecurityConfig{
 				);
 		return http.build();
 
-	}
-	@Bean
-	WebSecurityCustomizer webSecurityCustomizer() {
-	    // Omite totalmente Spring Security para estos patrones de URL
-	    return (web) -> web.ignoring().requestMatchers(
-	        "/css/**"
-	    );
 	}
 	
 	@Bean

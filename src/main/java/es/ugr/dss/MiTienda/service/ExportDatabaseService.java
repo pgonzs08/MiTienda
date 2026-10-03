@@ -31,11 +31,11 @@ public class ExportDatabaseService{
                     : "";
 
             sqlBuilder.append(String.format(
-                "INSERT INTO product (id, name, price) VALUES (%d, '%s', %.2f);\n",
+                "INSERT INTO product (id, name, price) VALUES (%d, '%s', %s);\n",
                 product.getId(),
                 sanitizedName,
-                product.getPrice()
-            ).replace(",", ".")); // Asegurar el formato decimal con punto (ej: 19.99)
+                String.format("%.2f",product.getPrice()).replace(',', '.')
+            ));
         }
 
         // Convertir la cadena SQL compilada a un array de bytes en codificación UTF-8

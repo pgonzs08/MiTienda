@@ -22,8 +22,9 @@ public class SecurityConfig{
 		http
 		.authorizeHttpRequests(auth -> auth
 				.requestMatchers("/", "/cart/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/products").permitAll()
+				.requestMatchers(HttpMethod.GET, "/catalog").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/register").permitAll()
 				.requestMatchers(PathRequest.toH2Console()).permitAll()
 				.anyRequest().authenticated()
 				)

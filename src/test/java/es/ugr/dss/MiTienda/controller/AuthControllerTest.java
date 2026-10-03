@@ -27,4 +27,13 @@ class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("login"));
     }
+    
+    @Test
+    @DisplayName("GET /register debe responder con estado 200 OK y devolver la vista 'register'")
+    @WithMockUser
+    void register_DeberiaDevolverVistaRegister() throws Exception {
+        mockMvc.perform(get("/register"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("register"));
+    }
 }

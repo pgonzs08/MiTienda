@@ -46,9 +46,9 @@ class SecurityTest {
         }
 
         @Test
-        @DisplayName("GET /products debe ser accesible sin autenticación")
+        @DisplayName("GET /catalog debe ser accesible sin autenticación")
         void publicProductsGet_DeberiaPermitirAccesoAnonimo() throws Exception {
-            mockMvc.perform(get("/products"))
+            mockMvc.perform(get("/catalog"))
                     .andExpect(status().isOk());
         }
 

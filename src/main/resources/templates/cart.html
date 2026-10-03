@@ -92,8 +92,8 @@
                             </div>
 
                             <form th:action="@{/cart/remove/{id}(id=${entry.key.id})}" method="post">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
+								<input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+								<button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1">
                                     <i class="bi bi-trash-fill"></i> Quitar
                                 </button>
                             </form>

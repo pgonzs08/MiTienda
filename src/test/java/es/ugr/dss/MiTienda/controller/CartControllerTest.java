@@ -62,19 +62,33 @@ class CartControllerTest {
     }
 
     @Test
-    @DisplayName("POST /cart/add/{id} debe añadir un producto y redirigir a /cart")
+    @DisplayName("POST /cart/add/{id} debe añadir un producto y devolver status OK")
     @WithMockUser
-    void addToCart_DeberiaAnadirProductoYRedirigirACart() throws Exception {
+    void addToCart_DeberiaAnadirProductoYOK() throws Exception {
         // Arrange
         Long productId = 1L;
 
         // Act & Assert
         mockMvc.perform(post("/cart/add/{id}", productId)
                         .with(csrf())) // Incluye el token CSRF para peticiones POST
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/cart"));
+                .andExpect(status().isOk());
 
         verify(cartService).addProduct(productId);
+    }
+    
+    @Test
+    @DisplayName("POST /cart/undo/{id} debe eliminar un producto y devolver status OK")
+    @WithMockUser
+    void addToCartUndo_DeberiaEliminarProductoYOK() throws Exception {
+        // Arrange
+        Long productId = 1L;
+
+        // Act & Assert
+        mockMvc.perform(post("/cart/undo/{id}", productId)
+                        .with(csrf())) // Incluye el token CSRF para peticiones POST
+                .andExpect(status().isOk());
+
+        verify(cartService).removeProduct(productId);
     }
 
     @Test

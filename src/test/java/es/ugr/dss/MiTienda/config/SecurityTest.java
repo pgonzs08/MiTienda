@@ -39,17 +39,17 @@ class SecurityTest {
         }
 
         @Test
-        @DisplayName("GET /cart debe ser accesible sin autenticación")
+        @DisplayName("GET /cart no puede ser accesible sin autenticar")
         void publicCart_DeberiaPermitirAccesoAnonimo() throws Exception {
             mockMvc.perform(get("/cart"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().is3xxRedirection());
         }
 
         @Test
-        @DisplayName("GET /catalog debe ser accesible sin autenticación")
+        @DisplayName("GET /catalog no puede ser accesible sin autenticar")
         void publicProductsGet_DeberiaPermitirAccesoAnonimo() throws Exception {
             mockMvc.perform(get("/catalog"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().is3xxRedirection());
         }
 
         @Test

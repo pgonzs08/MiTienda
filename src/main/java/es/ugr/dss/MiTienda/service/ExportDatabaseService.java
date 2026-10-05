@@ -3,6 +3,7 @@ package es.ugr.dss.MiTienda.service;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.ugr.dss.MiTienda.model.Product;
@@ -11,11 +12,8 @@ import es.ugr.dss.MiTienda.repository.ProductRepo;
 @Service
 public class ExportDatabaseService{
 	
-	private final ProductRepo productRepo;
-	
-	public ExportDatabaseService(ProductRepo repo) {
-		this.productRepo = repo;
-	}
+	@Autowired
+	private ProductRepo productRepo;
 	
 	public byte[] exportDatabaseToSql() {
         List<Product> products = productRepo.findAll();

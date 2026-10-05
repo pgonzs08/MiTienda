@@ -1,5 +1,6 @@
 package es.ugr.dss.MiTienda.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import es.ugr.dss.MiTienda.model.Product;
@@ -10,11 +11,8 @@ import java.util.List;
 @Service
 public class ProductService{
 
-	private final ProductRepo repository;
-
-	public ProductService(ProductRepo repository) {
-		this.repository = repository;
-	}
+	@Autowired
+	private ProductRepo repository;
 
 	public List<Product> getAllProducts(){
 		return this.repository.findAll();

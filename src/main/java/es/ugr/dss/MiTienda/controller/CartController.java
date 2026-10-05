@@ -1,5 +1,6 @@
 package es.ugr.dss.MiTienda.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,11 +15,8 @@ import java.util.Map;
 @RequestMapping("/cart")
 public class CartController {
 
-	private final CartService cartService;
-
-	public CartController(CartService cartService) {;
-		this.cartService = cartService;
-	}
+	@Autowired
+	private CartService cartService;
 
 	@GetMapping
 	public String cart(Model model) { 

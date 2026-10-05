@@ -1,4 +1,5 @@
 package es.ugr.dss.MiTienda.controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,11 +10,8 @@ import es.ugr.dss.MiTienda.service.ProductService;
 @Controller
 public class ProductController {
 
-	private final ProductService productService;
-
-	ProductController(ProductService productService) {
-		this.productService = productService;
-	}
+	@Autowired
+	ProductService productService;
 
 	@GetMapping("/catalog")
 	public String getProductsPage(Model model) {

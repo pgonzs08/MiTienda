@@ -2,6 +2,8 @@ package es.ugr.dss.MiTienda.service;
 
 import es.ugr.dss.MiTienda.model.User;
 import es.ugr.dss.MiTienda.repository.UserRepo;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,11 +12,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepo userRepo;
-
-    public CustomUserDetailsService(UserRepo userRepo) {
-        this.userRepo = userRepo;
-    }
+	@Autowired
+    private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

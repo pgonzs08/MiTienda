@@ -1,5 +1,6 @@
 package es.ugr.dss.MiTienda.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,8 @@ import es.ugr.dss.MiTienda.service.ExportDatabaseService;
 @RequestMapping("/admin")
 public class ExportController{
 
-	private final ExportDatabaseService exportService;
-
-	ExportController(ExportDatabaseService exportService) {
-		this.exportService = exportService;
-	}
+	@Autowired
+	private ExportDatabaseService exportService;
 
 	@GetMapping("/download-db-sql")
 	ResponseEntity<byte[]> downloadDatabaseSql() {

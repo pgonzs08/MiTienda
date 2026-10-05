@@ -1,5 +1,6 @@
 package es.ugr.dss.MiTienda.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -12,11 +13,8 @@ import java.util.*;
 public class CartService {
 
     private final Map<Long, Integer> items = new HashMap<>();
-    private final ProductService productService;
-
-    public CartService(ProductService productService) {
-        this.productService = productService;
-    }
+    @Autowired
+    private ProductService productService;
 
     public void addProduct(Long productId) {
         items.put(productId, items.getOrDefault(productId, 0) + 1);

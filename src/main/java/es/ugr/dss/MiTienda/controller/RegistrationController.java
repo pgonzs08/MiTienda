@@ -1,6 +1,7 @@
 package es.ugr.dss.MiTienda.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,13 +14,10 @@ import es.ugr.dss.MiTienda.repository.UserRepo;
 @Controller
 public class RegistrationController {
 
-    private final UserRepo userRepo;
-    private final PasswordEncoder passwordEncoder;
-
-    public RegistrationController(UserRepo userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+	@Autowired
+    private UserRepo userRepo;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
     public String registerUser(@RequestParam("username") String username,

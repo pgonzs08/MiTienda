@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="card-body p-4">
-                        <form th:action="@{/catalog/update/{id}(id=${product.id})}" method="post">
+                        <form th:action="@{/admin/catalog/update/{id}(id=${product.id})}" method="post">
 							<!-- Token CSRF seguro con renderizado condicional (evita la excepción SpEL si _csrf es null) -->
 							<input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <div class="mb-3">

@@ -37,7 +37,7 @@ class ProductControllerTest {
     @WithMockUser
     void getProductsPage_DeberiaDevolverVistaProductsConModelo() throws Exception {
         Product producto = new Product();
-        given(productService.getAllProducts()).willReturn(List.of(producto));
+        given(productService.getFilteredProducts(null, null, null)).willReturn(List.of(producto));
 
         mockMvc.perform(get("/catalog"))
                 .andExpect(status().isOk())

@@ -45,7 +45,7 @@ class ProductControllerTest {
                 .andExpect(model().attributeExists("products"))
                 .andExpect(model().attribute("products", List.of(producto)));
 
-        verify(productService).getAllProducts();
+        verify(productService).getFilteredProducts(null, null, null);
     }
 
     @Test

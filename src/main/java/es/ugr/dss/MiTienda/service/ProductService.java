@@ -18,6 +18,13 @@ public class ProductService{
 		return this.repository.findAll();
 	}
 
+	public List<Product> getFilteredProducts(String name, Double min, Double max){
+		
+		String cleanName = (name != null && !name.trim().isEmpty()) ? name.trim() : null;
+		
+		return this.repository.buscarPorFiltros(cleanName, min, max);
+	}
+	
 	public Product getProductById(Long id){
 		return this.repository.getReferenceById(id);
 	}

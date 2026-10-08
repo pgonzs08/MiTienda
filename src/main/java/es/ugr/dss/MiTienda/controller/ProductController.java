@@ -1,4 +1,6 @@
 package es.ugr.dss.MiTienda.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,13 @@ public class ProductController {
 	ProductService productService;
 
 	@GetMapping("/catalog")
-	public String getProductsPage(Model model) {
-		model.addAttribute("products", productService.getAllProducts());
+	public String getProductsPage(Model model, 
+			@RequestParam(name="query", required = false) String name,
+			@RequestParam(name="minPrice", required = false) Double min,
+			@RequestParam(name="maxPrice", required = false) Double max) {
+		
+		List<Product> products = productService.getFilteredProducts(name, min, max);
+		model.addAttribute("products", products);
 		return "products"; // Devuelve products.html desde las plantillas
 	}
 	@GetMapping("/admin/catalog/add")

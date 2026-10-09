@@ -1,6 +1,8 @@
 package es.ugr.dss.MiTienda.service;
 
 import es.ugr.dss.MiTienda.model.Product;
+import jakarta.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,8 +56,8 @@ class CartServiceTest {
     }
 
     @Test
-    @DisplayName("getProductsInCart ignora productos cuando ProductService devuelve null")
-    void getProductsInCart_DeberiaIgnorarProductosNulos() {
+    @DisplayName("getProductsInCart borra productos cuando ProductService devuelve EntityNotFoundException")
+    void getProductsInCart_DeberiaElimiarProductosEliminados() {
 
         Long idExistente = 1L;
         Long idInexistente = 2L;
@@ -63,7 +65,7 @@ class CartServiceTest {
         Product mockProduct = new Product();
 
         given(productService.getProductById(idExistente)).willReturn(mockProduct);
-        given(productService.getProductById(idInexistente)).willReturn(null);
+        given(productService.getProductById(idInexistente)).willThrow(new EntityNotFoundException());
 
         cartService.addProduct(idExistente);
         cartService.addProduct(idInexistente);
@@ -74,6 +76,28 @@ class CartServiceTest {
         assertThat(cart).containsKey(mockProduct);
         assertThat(cart.get(mockProduct)).isEqualTo(1);
     }
+    
+    @Test
+    @DisplayName("getProductsInCart resiste al encontrar productos que se eliminaron")
+    void getProductsInCart_ResisteEliminarProductos() {
+    	Long id1 = 1L;
+    	
+    	Product product1 = new Product();
+    	
+    	given(productService.getProductById(id1)).willReturn(product1);
+    	
+    	cartService.addProduct(id1);
+        
+        productService.deleteProduct(id1);
+        
+        given(productService.getProductById(id1)).willReturn(null);
+        
+        Map<Product, Integer> cart = cartService.getProductsInCart();
+        
+        assertThat(cart).doesNotContainKey(product1);
+        
+    }
+    
 
     @Test
     @DisplayName("getProductsInCart devuelve un mapa inmodificable")

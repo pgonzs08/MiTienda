@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import es.ugr.dss.MiTienda.model.Product;
 import es.ugr.dss.MiTienda.repository.ProductRepo;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 

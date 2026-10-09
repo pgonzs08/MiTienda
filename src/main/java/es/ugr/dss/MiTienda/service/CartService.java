@@ -32,8 +32,9 @@ public class CartService {
                 Product p = productService.getProductById(entry.getKey());
                 products.put(p, entry.getValue());
         	}
-        	catch (EntityNotFoundException e) {
-        	}
+            catch (EntityNotFoundException e) {
+            	items.remove(entry.getKey());
+            }
         }
         return Collections.unmodifiableMap(products);
     }

@@ -121,3 +121,69 @@ MiTienda/
 ├── mvnw / mvnw.cmd       # Wrapper de Maven para ejecutar sin instalación global
 ├── pom.xml               # Configuración de dependencias y plugins de Maven
 └── README.md             # Documentación del proyecto
+```
+
+---
+
+## 📋 Guión de Desarrollo y Metodología
+
+El desarrollo de **MiTienda** sigue un flujo de trabajo estructurado basado en la metodología **GitHub Flow** e integración continua. Esto garantiza una colaboración organizada, trazabilidad de las funcionalidades y un control riguroso de la calidad del código.
+
+---
+
+### 1. Gestión de Tareas mediante Issues
+
+Cualquier nueva característica, corrección de errores (*bugfix*) o refactorización debe quedar registrada en el repositorio como una **Issue** previa a su desarrollo.
+
+1. **Creación de Issues:**
+   - Antes de escribir código, abre una nueva Issue en la pestaña **Issues** de GitHub.
+   - Utiliza un título claro y descriptivo (ej. `[Feature] Añadir barra de búsqueda y filtros por precio`).
+   - Describe brevemente el problema, el comportamiento esperado y los criterios de aceptación.
+
+2. **Asignación de Tareas:**
+   - **Regla de asignación:** Revisa la lista de tareas abiertas y selecciona una Issue que **no tenga personas asignadas** (*Unassigned*).
+   - Asígnate la tarea antes de comenzar a trabajar para evitar duplicar esfuerzos con otros miembros del equipo.
+
+---
+
+### 2. Flujo de Trabajo en Ramas (*Branching*)
+
+Para mantener la rama principal (`main`) siempre estable y lista para producción, **está prohibido hacer commits directamente sobre `main`**.
+
+1. **Crear una rama de trabajo:**
+   - Crea una rama independiente a partir de `main` con un nombre representativo y el número de la Issue:
+     ```bash
+     git checkout main
+     git pull origin main
+     git checkout -b feature/issue-12-filtros-catalogo
+     ```
+
+2. **Desarrollo y Commits:**
+   - Realiza commits pequeños, atómicos y con mensajes descriptivos:
+     ```bash
+     git commit -m "feat: implementar filtro de precio min/max en ProductRepo (#12)"
+     ```
+
+---
+
+### 3. Revisión e Integración mediante Pull Requests (PR)
+
+Una vez completada la tarea y verificadas las pruebas locales, se procede a integrar los cambios en la rama principal.
+
+1. **Creación de la Pull Request:**
+   - Sube tu rama al repositorio remoto (`git push origin feature/issue-12-filtros-catalogo`).
+   - Abre una **Pull Request** desde tu rama hacia `main`.
+   - En la descripción de la PR, vincula la Issue correspondiente incluyendo la palabra clave de cierre automático (ej. `Closes #12` o `Fixes #12`).
+
+2. **Revisión de Código y Merge:**
+   - Todo código debe ser revisado por al menos otro desarrollador antes de ser integrado.
+   - Las pruebas automatizadas (GitHub Actions / CI) deben ejecutarse y pasar correctamente.
+   - Una vez aprobada la revisión, se realiza el *Merge* a la rama `main` y se elimina la rama secundaria para mantener limpio el entorno de trabajo.
+
+---
+
+### 🔄 Resumen del Ciclo de Vida de una Funcionalidad
+
+```text
+[ Issue sin asignar ] ➔ [ Asignarse la Issue ] ➔ [ Crear rama local ] ➔ [ Trabajo y Commits ] ➔ [ Abrir Pull Request ] ➔ [ Code Review / CI ] ➔ [ Merge a main ]
+```

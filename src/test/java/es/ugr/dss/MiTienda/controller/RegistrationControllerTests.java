@@ -2,6 +2,8 @@ package es.ugr.dss.MiTienda.controller;
 
 import es.ugr.dss.MiTienda.model.User;
 import es.ugr.dss.MiTienda.repository.UserRepo;
+import es.ugr.dss.MiTienda.service.CustomUserDetailsService;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ class RegistrationControllerTest {
 
     @MockitoBean
     private UserRepo userRepo;
+    
+    @MockitoBean
+    private CustomUserDetailsService userService;
 
     @MockitoBean
     private PasswordEncoder passwordEncoder;

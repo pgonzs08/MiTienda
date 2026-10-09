@@ -1,5 +1,7 @@
 package es.ugr.dss.MiTienda.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import es.ugr.dss.MiTienda.model.User;
+import es.ugr.dss.MiTienda.repository.UserRepo;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
+	
+	@Autowired
+	private UserRepo userRepo;
+	
 	@Bean 
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http
@@ -52,4 +61,18 @@ public class SecurityConfig{
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+    CommandLineRunner initAdminUser(PasswordEncoder passwordEncoder) {
+        return args -> {
+            if (!userRepo.existsByUsername("admin")) {
+                User newUser = new User();
+                newUser.setUsername("admin");
+                newUser.setPassword(passwordEncoder.encode("123&qwe&asD")); 
+                newUser.setRole("ADMIN"); // Asignado rol ADMIN para acceder a /admin/**
+                
+                userRepo.save(newUser);
+            }
+        };
+    }
+	
 }

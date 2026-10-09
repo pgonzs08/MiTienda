@@ -39,7 +39,7 @@ public class SecurityConfig{
                 .permitAll()
 
             // Public product browsing (MVC)
-            .requestMatchers(HttpMethod.GET, "/products", "/products/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/products").permitAll()
 
             // Admin-only pages
             .requestMatchers("/admin/**",

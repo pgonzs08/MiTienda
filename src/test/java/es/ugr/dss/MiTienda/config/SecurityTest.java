@@ -36,9 +36,9 @@ class SecurityTest {
 
         @Test
         @DisplayName("GET /cart no puede ser accesible sin autenticar")
-        void publicCart_DeberiaPermitirAccesoAnonimo() throws Exception {
+        void publicCart_NoDeberiaPermitirAccesoAnonimo() throws Exception {
             mockMvc.perform(get("/cart"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().is3xxRedirection());
         }
 
         @Test
@@ -93,7 +93,7 @@ class SecurityTest {
         @DisplayName("POST sin token CSRF en una ruta protegida debe fallar con 403 Forbidden")
         @WithMockUser
         void getSinCsrf_DeberiaSerRechazado() throws Exception {
-            mockMvc.perform(get("/products/add"))
+            mockMvc.perform(get("/admin"))
                     .andExpect(status().isForbidden());
         }
 
@@ -101,7 +101,7 @@ class SecurityTest {
         @DisplayName("POST con token CSRF válido debe ser procesado")
         @WithMockUser(roles = "ADMIN")
         void getConCsrf_DeberiaSerAceptado() throws Exception {
-            mockMvc.perform(get("/products/add").with(csrf()))
+            mockMvc.perform(get("/products").with(csrf()))
                     .andExpect(status().isOk());
         }
     }

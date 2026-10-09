@@ -9,13 +9,14 @@ import org.springframework.web.bind.annotation.*;
 import es.ugr.dss.MiTienda.model.Product;
 import es.ugr.dss.MiTienda.service.ProductService;
 
+@RequestMapping("/products")
 @Controller
 public class ProductController {
 
 	@Autowired
 	ProductService productService;
 
-	@GetMapping("/products")
+	@GetMapping
 	public String getProductsPage(Model model, 
 			@RequestParam(name="query", required = false) String name,
 			@RequestParam(name="minPrice", required = false) Double min,
@@ -25,14 +26,23 @@ public class ProductController {
 		model.addAttribute("products", products);
 		return "products"; // Devuelve products.html desde las plantillas
 	}
+	
+	@GetMapping("/add")
+	public String addForm(Model model) {
+		Product p = new Product();
+		p.setName("Nuevo producto");
+		p.setPrice(0.0);
+		model.addAttribute("product", p);
+		return "product_form";
+	}
 
-	@GetMapping("/products/edit/{id}")
+	@GetMapping("/edit/{id}")
 	public String editForm(Model model, @PathVariable Long id) {
 		model.addAttribute("product", productService.getProductById(id));
 		return "product_form";
 	}
 	
-	@PostMapping("/products/add")
+	@PostMapping("/add")
 	public String addProduct(@RequestParam String name, @RequestParam double price) {
 		Product product = new Product();
 		product.setName(name);
@@ -42,7 +52,7 @@ public class ProductController {
 	}
 
 
-	@PostMapping("/products/update/{id}")
+	@PostMapping("/update/{id}")
 	public String editProduct(@PathVariable Long id, @RequestParam String name, @RequestParam double price) {
 		Product product = productService.getProductById(id);
 		if (product != null) {
@@ -52,7 +62,7 @@ public class ProductController {
 		}
 		return "redirect:/admin";  // Redirigir correctamente a /admin
 	}
-	@PostMapping("/products/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public String deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 		return "redirect:/admin";  // Redirigir correctamente a /admin

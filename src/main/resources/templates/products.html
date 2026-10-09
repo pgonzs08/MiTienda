@@ -185,7 +185,7 @@
 					<div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-4 w-100 w-sm-auto">
 						<span class="fs-4 fw-bold text-primary text-nowrap" 
 					      th:text="${#numbers.formatCurrency(product.price)}">0.00 €</span>
-						<form th:id="${product.id}" th:action="@{/cart/add/{id}(id=${product.id})}" 
+						<form th:action="@{/cart/add/{id}(id=${product.id})}" 
 						      method="post" 
 						      class="add-to-cart-form m-0" 
 						      th:data-product-id="${product.id}"
@@ -193,8 +193,8 @@
 						      onsubmit="addToCartAjax(event, this)">
 						      
 						    <input th:if="${_csrf != null}" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-						    
-						    <button type="submit" th:form="${product.id}" class="btn btn-outline-primary fw-semibold d-flex align-items-center gap-2 px-3 py-2 text-nowrap">
+
+						    <button type="submit" class="btn btn-outline-primary fw-semibold d-flex align-items-center gap-2 px-3 py-2 text-nowrap">
 						        <i class="bi bi-cart-plus-fill fs-5"></i>
 						        <span>Agregar</span>
 						    </button>

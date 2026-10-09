@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
 import es.ugr.dss.MiTienda.model.Product;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.util.*;
 
@@ -27,10 +28,12 @@ public class CartService {
     public Map<Product, Integer> getProductsInCart() {
         Map<Product, Integer> products = new HashMap<>();
         for (Map.Entry<Long, Integer> entry : items.entrySet()) {
-            Product p = productService.getProductById(entry.getKey());
-            if (p != null) {
+        	try {
+                Product p = productService.getProductById(entry.getKey());
                 products.put(p, entry.getValue());
-            }
+        	}
+        	catch (EntityNotFoundException e) {
+        	}
         }
         return Collections.unmodifiableMap(products);
     }

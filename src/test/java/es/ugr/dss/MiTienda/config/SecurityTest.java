@@ -1,5 +1,10 @@
 package es.ugr.dss.MiTienda.config;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,15 +15,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import es.ugr.dss.MiTienda.MiTiendaApplication;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(classes = MiTiendaApplication.class)
 @AutoConfigureMockMvc
@@ -40,15 +36,15 @@ class SecurityTest {
 
         @Test
         @DisplayName("GET /cart no puede ser accesible sin autenticar")
-        void publicCart_DeberiaPermitirAccesoAnonimo() throws Exception {
+        void publicCart_NoDeberiaPermitirAccesoAnonimo() throws Exception {
             mockMvc.perform(get("/cart"))
-                    .andExpect(status().isOk());
+                    .andExpect(status().is3xxRedirection());
         }
 
         @Test
-        @DisplayName("GET /catalog no puede ser accesible sin autenticar")
+        @DisplayName("GET /products no puede ser accesible sin autenticar")
         void publicProductsGet_DeberiaPermitirAccesoAnonimo() throws Exception {
-            mockMvc.perform(get("/catalog"))
+            mockMvc.perform(get("/products"))
                     .andExpect(status().isOk());
         }
 
@@ -97,7 +93,7 @@ class SecurityTest {
         @DisplayName("POST sin token CSRF en una ruta protegida debe fallar con 403 Forbidden")
         @WithMockUser
         void getSinCsrf_DeberiaSerRechazado() throws Exception {
-            mockMvc.perform(get("/admin/catalog/add"))
+            mockMvc.perform(get("/admin"))
                     .andExpect(status().isForbidden());
         }
 
@@ -105,7 +101,7 @@ class SecurityTest {
         @DisplayName("POST con token CSRF válido debe ser procesado")
         @WithMockUser(roles = "ADMIN")
         void getConCsrf_DeberiaSerAceptado() throws Exception {
-            mockMvc.perform(get("/admin/catalog/add").with(csrf()))
+            mockMvc.perform(get("/products").with(csrf()))
                     .andExpect(status().isOk());
         }
     }

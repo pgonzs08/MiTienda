@@ -30,9 +30,9 @@ class ExportControllerTest {
     private ExportDatabaseService exportService;
 
     @Test
-    @DisplayName("GET /admin/download-db-sql debe retornar un archivo SQL descargable con estado HTTP 200")
+    @DisplayName("GET /admin/export debe retornar un archivo SQL descargable con estado HTTP 200")
     @WithMockUser
-    void downloadDatabaseSql_DeberiaDevolverArchivoSqlConCabecerasCorrectas() throws Exception {
+    void export_DeberiaDevolverArchivoSqlConCabecerasCorrectas() throws Exception {
         // Arrange
         String mockSqlContent = "-- Script de exportación\nINSERT INTO product (id, name, price) VALUES (1, 'Teclado', 29.99);\n";
         byte[] mockSqlBytes = mockSqlContent.getBytes(StandardCharsets.UTF_8);
@@ -40,7 +40,7 @@ class ExportControllerTest {
         given(exportService.exportDatabaseToSql()).willReturn(mockSqlBytes);
 
         // Act & Assert
-        mockMvc.perform(get("/admin/download-db-sql"))
+        mockMvc.perform(get("/admin/export"))
                 .andExpect(status().isOk())
                 .andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"products.sql\""))
                 .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM))

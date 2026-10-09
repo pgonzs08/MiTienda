@@ -17,7 +17,7 @@ public class ExportController{
 	@Autowired
 	private ExportDatabaseService exportService;
 
-	@GetMapping("/download-db-sql")
+	@GetMapping("/export")
 	ResponseEntity<byte[]> downloadDatabaseSql() {
 		byte[] sqlData = exportService.exportDatabaseToSql();
 

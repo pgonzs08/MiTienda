@@ -19,13 +19,13 @@
 			    <span>MiTienda</span>
 			</a>
             <div class="d-flex flex-wrap gap-2">
-                <a href="/catalog" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
+                <a href="/products" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
                     <i class="bi bi-grid-fill"></i> Catálogo
                 </a>
                 <a href="/cart" class="btn btn-outline-light btn-sm d-flex align-items-center gap-1">
                     <i class="bi bi-cart-fill"></i> Carrito
                 </a>
-                <a href="/admin/download-db-sql" class="btn btn-success btn-sm d-flex align-items-center gap-1">
+                <a href="/admin/export" class="btn btn-success btn-sm d-flex align-items-center gap-1">
                     <i class="bi bi-download"></i> Descargar BD (SQL)
                 </a>
 				<div class="d-flex align-items-center gap-2">
@@ -74,7 +74,7 @@
                         </h2>
                     </div>
                     <div class="card-body p-4">
-                        <form th:action="@{/admin/catalog/add}" method="post">
+                        <form th:action="@{/products/add}" method="post">
                             <!-- Token CSRF -->
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
@@ -143,10 +143,10 @@
                                 </span>
                             </div>
                             <div class="d-flex align-items-center gap-2">
-                                <a th:href="@{/admin/catalog/edit/{id}(id=${product.id})}" class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1">
+                                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-outline-warning btn-sm d-flex align-items-center gap-1">
                                     <i class="bi bi-pencil-square"></i> Editar
                                 </a>
-                                <form th:action="@{/admin/catalog/delete/{id}(id=${product.id})}" method="post" class="d-inline">
+                                <form th:action="@{/products/delete/{id}(id=${product.id})}" method="post" class="d-inline">
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                                     <button type="submit" 
                                             class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"

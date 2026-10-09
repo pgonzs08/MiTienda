@@ -71,7 +71,7 @@
 		
 		<!-- Barra de Búsqueda -->
 		<!-- Formulario principal de búsqueda y filtros -->
-		<form id="filterForm" th:action="@{/catalog}" method="get">
+		<form id="filterForm" th:action="@{/products}" method="get">
 		    
 		    <!-- Barra de Búsqueda por Nombre (Superior) -->
 		    <div class="card shadow-sm border-0 rounded-4 mb-4">
@@ -144,7 +144,7 @@
 			                <button type="submit" form="filterForm" class="btn btn-primary fw-semibold d-flex align-items-center justify-content-center gap-2 py-2">
 			                    <i class="bi bi-funnel-fill"></i> Aplicar Filtros
 			                </button>
-			                <a th:href="@{/catalog}" class="btn btn-outline-secondary fw-semibold d-flex align-items-center justify-content-center gap-1 py-2">
+			                <a th:href="@{/products}" class="btn btn-outline-secondary fw-semibold d-flex align-items-center justify-content-center gap-1 py-2">
 			                    <i class="bi bi-x-circle"></i> Limpiar Filtros
 			                </a>
 			            </div>

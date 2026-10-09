@@ -2,10 +2,9 @@ package es.ugr.dss.MiTienda.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,35 +24,49 @@ public class SecurityConfig{
 	@Bean 
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http
-		.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/").permitAll()
-				.requestMatchers("/catalog").permitAll()
-				.requestMatchers("/cart").permitAll()
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("/api/**").denyAll()
-				.requestMatchers("/register").permitAll()
-				.requestMatchers(PathRequest.toH2Console()).permitAll()
-				.anyRequest().authenticated()
-				)
-		.formLogin(form -> form
-				.loginPage("/login").permitAll()
-				.defaultSuccessUrl("/index", true)
-				)
-		.logout(logout -> logout
-				.logoutUrl("/logout")
-				.invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-				.logoutSuccessUrl("/login?logout")
-				)
-		.csrf(csrf -> csrf
-				.ignoringRequestMatchers(PathRequest.toH2Console())
-				)
-		.headers(headers -> headers
-				.frameOptions(frame -> frame.sameOrigin())
-				);
-		return http.build();
+        // Allow APIs without CSRF
+        .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
 
+        // Authorization rules
+        .authorizeHttpRequests(auth -> auth
+
+            // Allow REST API (ALL METHODS: GET, POST, DELETE…)
+            .requestMatchers("/api/**").permitAll()
+
+            // Public static pages
+            .requestMatchers("/", "/index", "/index.html",
+                             "/css/**", "/js/**", "/images/**", "/webjars/**")
+                .permitAll()
+
+            // Public product browsing (MVC)
+            .requestMatchers(HttpMethod.GET, "/products", "/products/**").permitAll()
+
+            // Admin-only pages
+            .requestMatchers("/admin/**",
+                             "/products/add",
+                             "/products/edit/**",
+                             "/products/delete/**")
+                .hasRole("ADMIN")
+
+            // Everything else requires login
+            .anyRequest().authenticated()
+        )
+
+        // Browser login
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/login")
+            .defaultSuccessUrl("/index", true)
+            .permitAll()
+        )
+
+        .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/")
+            .permitAll()
+        );
+
+    return http.build();
 	}
 	
 	@Bean

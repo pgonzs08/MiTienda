@@ -15,7 +15,7 @@ public class ProductController {
 	@Autowired
 	ProductService productService;
 
-	@GetMapping("/catalog")
+	@GetMapping("/products")
 	public String getProductsPage(Model model, 
 			@RequestParam(name="query", required = false) String name,
 			@RequestParam(name="minPrice", required = false) Double min,
@@ -25,19 +25,14 @@ public class ProductController {
 		model.addAttribute("products", products);
 		return "products"; // Devuelve products.html desde las plantillas
 	}
-	@GetMapping("/admin/catalog/add")
-	public String showAddForm(Model model) {
-		model.addAttribute("product", new Product());
-		return "product_form"; // templates/product_form.html
-	}
 
-	@GetMapping("/admin/catalog/edit/{id}")
+	@GetMapping("/products/edit/{id}")
 	public String editForm(Model model, @PathVariable Long id) {
 		model.addAttribute("product", productService.getProductById(id));
 		return "product_form";
 	}
 	
-	@PostMapping("/admin/catalog/add")
+	@PostMapping("/products/add")
 	public String addProduct(@RequestParam String name, @RequestParam double price) {
 		Product product = new Product();
 		product.setName(name);
@@ -47,7 +42,7 @@ public class ProductController {
 	}
 
 
-	@PostMapping("/admin/catalog/update/{id}")
+	@PostMapping("/products/update/{id}")
 	public String editProduct(@PathVariable Long id, @RequestParam String name, @RequestParam double price) {
 		Product product = productService.getProductById(id);
 		if (product != null) {
@@ -57,7 +52,7 @@ public class ProductController {
 		}
 		return "redirect:/admin";  // Redirigir correctamente a /admin
 	}
-	@PostMapping("/admin/catalog/delete/{id}")
+	@PostMapping("/products/delete/{id}")
 	public String deleteProduct(@PathVariable Long id) {
 		productService.deleteProduct(id);
 		return "redirect:/admin";  // Redirigir correctamente a /admin

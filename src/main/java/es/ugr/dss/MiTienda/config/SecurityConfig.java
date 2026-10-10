@@ -30,8 +30,14 @@ public class SecurityConfig{
         // Authorization rules
         .authorizeHttpRequests(auth -> auth
 
-            // Allow REST API (ALL METHODS: GET, POST, DELETE…)
-            .requestMatchers("/api/**").permitAll()
+            // Allow Products REST API (ALL METHODS: GET, POST, DELETE…)
+            .requestMatchers("/api/products/**").permitAll()
+            
+            // Admin-only REST API
+            .requestMatchers("/api/users/**").hasRole("ADMIN")
+            
+            // Allow Register
+            .requestMatchers("/register").permitAll()
 
             // Public static pages
             .requestMatchers("/", "/index", "/index.html",

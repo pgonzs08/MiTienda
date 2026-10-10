@@ -100,7 +100,7 @@ Es el método estándar e independiente de IDE. Utiliza el ejecutable `mvnw` inc
 * **Framework Principal:** Spring Boot 3.5.x
 * **Gestor de Dependencias:** Apache Maven
 * **Capa de Persistencia:** Spring Data JPA / Hibernate
-* **Base de Datos:** H2 (En memoria para desarrollo/pruebas) / MySQL
+* **Base de Datos:** H2
 * **Testing:** JUnit 5, AssertJ, Mockito
 * **Herramientas de Construcción:** Maven Wrapper (`mvnw` / `mvnw.cmd`)
 

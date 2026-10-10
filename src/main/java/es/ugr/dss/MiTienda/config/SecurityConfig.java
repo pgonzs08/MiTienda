@@ -51,7 +51,8 @@ public class SecurityConfig{
             .requestMatchers("/admin/**",
                              "/products/add",
                              "/products/edit/**",
-                             "/products/delete/**")
+                             "/products/delete/**",
+                             "/products/update/**")
                 .hasRole("ADMIN")
 
             // Everything else requires login
